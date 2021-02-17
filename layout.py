@@ -23,6 +23,18 @@ colemak = (
     "zxcvb km,./"
 )
 
+dvorak = (
+    "',.py fgcrl"
+    "aoeui dhtns-"
+    ";qjkx bmwvz"
+)
+
+custom = (
+    "abcde fghij"
+    "klmno pqrstu"
+    "vwxyz ;',./"
+)
+
 class KeyPosition():
     def __init__(self, hand, row, col):
         self.hand = hand
@@ -65,7 +77,15 @@ class KeyGrid():
                 return row[col_id]
         
         else:
-            return self.key_map.get(key)
+            unshifted = KeyGrid.unshift_map.get(key)
+            if self.key_map.get(key) is not None:
+                return self.key_map.get(key) 
+            elif self.key_map.get(unshifted) is not None:
+                return self.key_map.get(unshifted)
+
+            return None 
+            
+            
 
     def _apply_helper(self, list, f, row_id, col_start):
         for i in range(len(list)):
@@ -143,14 +163,47 @@ class KeyGrid():
         self.apply(sm)
         return sm.str
     
-
+    unshift_map = {
+        'A': 'a',
+        'B': 'b',
+        'C': 'c',
+        'D': 'd',
+        'E': 'e',
+        'F': 'f',
+        'G': 'g',
+        'H': 'h',
+        'I': 'i',
+        'J': 'j',
+        'K': 'k',
+        'L': 'l',
+        'M': 'm',
+        'N': 'n',
+        'O': 'o',
+        'P': 'p',
+        'Q': 'q',
+        'R': 'r',
+        'S': 's',
+        'T': 't',
+        'U': 'u',
+        'V': 'v',
+        'W': 'w',
+        'X': 'x',
+        'Y': 'y',
+        'Z': 'z',
+        ':': ';',
+        '<': ',',
+        '>': '.',
+        '?': '/',
+    }
     
     
 class Layout():
     def __init__(self, grid_spec, key_placement):
+        self.grid_spec = grid_spec
         self.grid = KeyGrid(grid_spec)
         self.grid.fill_with(key_placement)
 
 
     def __str__(self):
         return str(self.grid)
+
