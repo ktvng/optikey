@@ -1,5 +1,5 @@
 from assessment import Assessment
-import layout as keyboard
+import keyboard
 
 a = [None] * 5
 
